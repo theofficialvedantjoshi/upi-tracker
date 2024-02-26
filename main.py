@@ -118,6 +118,38 @@ def tag_amounts():
     except:
         print("Tags not found.")
         return
+def catergory():
+    if not os.path.exists('categories.xlsx'):
+        categories = ["Food","Groceries","Entertainment","Travel","Bills","Others"]
+        print("Categories: ",categories)
+        print("\nAdd a Category y/n: ")
+        choice = input()
+        if choice == 'y':
+            print("\nEnter the category: ")
+            category = input()
+            categories.append(category)
+            print("\nCategory added.")
+        else:
+            pass
+    else:
+        cf = pd.read_excel('categories.xlsx')
+        categories = cf['categories'].to_list()
+    cf = pd.DataFrame(columns=['categories'])
+    cf['categories'] = categories
+    cf.to_excel('categories.xlsx',index=False)
+    print("Add categories to tags: ")
+    df = pd.read_excel('tag_amounts.xlsx')
+    tags = df['tags'].to_list()
+    categories = categories
+    cat = []
+    for i in tags:
+        print("Tag: ",i)
+        print("Categories: ",categories)
+        print("Enter category: ")
+        cat.append(input())
+    df['categories'] = cat
+    df.to_excel('tag_amounts.xlsx',index=False)
+    print("Categories added.")
 def menu():
     print("UPI Transaction Analyzer\n")
     print("1. Fetch Records\n")
@@ -125,7 +157,8 @@ def menu():
     print("3. View statistics\n")
     print("4. Tag transactions\n")
     print("5. View Amounts by tags\n")
-    print("6. Exit\n")
+    print("6. Add Categories to tags\n")
+    print("7. Exit\n")
     choice = input("Enter your choice: ")
     if choice == '1':
         num = int(input("Enter the number of records to fetch: \n"))
@@ -144,6 +177,8 @@ def menu():
         tag_amounts()
         menu()
     elif choice == '6':
+        catergory()
+    elif choice == '7':
         print("Exiting...")
         exit()
     else:
