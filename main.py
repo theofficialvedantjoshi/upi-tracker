@@ -20,6 +20,12 @@ def fetch(num):
     if not isemail(bank):
         print("Invalid email")
         return
+    bank_data = pd.read_csv('banks.csv')
+    for i in bank_data['bank']:
+        if i in bank:
+            money_prefix = bank_data['money_prefix'][bank_data['bank']==i].values[0]
+            id_prefix = bank_data['id_prefix'][bank_data['bank']==i].values[0]
+            
     SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
     df = pd.DataFrame(columns=['Amount','Date'])
     creds = None
@@ -56,10 +62,10 @@ def fetch(num):
             transaction = str(request.execute().get('snippet'))
             #print("Computing transaction ",i+1," of ",n,'...\n')
             try:
-                amounts.append(float(re.findall(r'Rs.[0-9]*[.]?[0-9]+',transaction)[0].strip('Rs.')))
+                amounts.append(float(re.findall(fr'{money_prefix}[0-9]*[.]?[0-9]+',transaction)[0].strip('Rs.')))
                 dates.append(re.findall(r"\d{2}[-]\d{2}[-]\d{2}",transaction)[0])
                 #word that starts with VPA
-                transaction_ids.append(''.join(transaction.split('VPA')[1]).split(' ')[1])
+                transaction_ids.append(''.join(transaction.split(id_prefix)[1]).split(' ')[1])
             except:
                 continue
         path = "records.xlsx"
