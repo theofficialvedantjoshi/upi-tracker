@@ -8,8 +8,18 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from tqdm import tqdm
+import tabulate
 
+def isemail(email):
+    if re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return True
+    else:
+        return False
 def fetch(num):
+    bank = input("Enter bank alerts email: ")
+    if not isemail(bank):
+        print("Invalid email")
+        return
     SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
     df = pd.DataFrame(columns=['Amount','Date'])
     creds = None
@@ -33,7 +43,6 @@ def fetch(num):
         amounts = []
         dates = []
         transaction_ids = []
-        bank = "alerts@hdfcbank.net"
         service = build('gmail', 'v1', credentials=creds)
         l_list = service.users().messages().list(userId='me',q=("from:{}".format(bank))).execute()
         ids=[]  
@@ -76,6 +85,8 @@ def stats():
     df = pd.read_excel('records.xlsx', sheet_name='BANK RECORDS')
     inf = df.describe()
     inf.to_excel('info.xlsx')
+    print(tabulate.tabulate(inf, headers='keys', tablefmt='psql'))
+
 
 def tag():
     df = pd.read_excel('records.xlsx', sheet_name='BANK RECORDS')
