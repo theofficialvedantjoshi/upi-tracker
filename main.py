@@ -86,6 +86,7 @@ def stats():
     inf = df.describe()
     inf.to_excel('info.xlsx')
     print(tabulate.tabulate(inf, headers='keys', tablefmt='psql'))
+    print("\n")
 
 
 def tag():
@@ -106,13 +107,17 @@ def tag():
     tf['tags'] = tags
     tf.to_excel('tags.xlsx')
 def tag_amounts():
-    df = pd.read_excel('records.xlsx', sheet_name='BANK RECORDS')
-    tf = pd.read_excel('tags.xlsx')
-    amounts = []
-    for i in tf['ids']:
-        amounts.append(df['Amount'][df['ids']==i].sum())
-    tf['Amounts'] = amounts
-    tf.to_excel('tag_amounts.xlsx',index=False)
+    try:
+        df = pd.read_excel('records.xlsx', sheet_name='BANK RECORDS')
+        tf = pd.read_excel('tags.xlsx')
+        amounts = []
+        for i in tf['ids']:
+            amounts.append(df['Amount'][df['ids']==i].sum())
+        tf['Amounts'] = amounts
+        tf.to_excel('tag_amounts.xlsx',index=False)
+    except:
+        print("Tags not found.")
+        return
 def menu():
     print("UPI Transaction Analyzer\n")
     print("1. Fetch Records\n")
@@ -123,7 +128,7 @@ def menu():
     print("6. Exit\n")
     choice = input("Enter your choice: ")
     if choice == '1':
-        num = int(input("Enter the number of records to fetch: "))
+        num = int(input("Enter the number of records to fetch: \n"))
         fetch(num)
         menu()
     elif choice == '2':
