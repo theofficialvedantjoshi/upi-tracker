@@ -1,3 +1,3 @@
-bank	money_prefix	id_prefix
-hdfc	Rs.	VPA
-axis	INR 	Info-
+bank,money_prefix,id_prefix
+HDFC,Rs.,VPA
+AXIS,INR ,Info-
