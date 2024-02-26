@@ -1,7 +1,7 @@
 import pandas as pd
 
 df = pd.DataFrame(columns=['bank','money_prefix','id_prefix'])
-b = ['HDFC','AXIS']
+b = ['hdfc','axis']
 m = ['Rs.','INR ']
 i = ['VPA','Info-']
 df['bank'] = b
