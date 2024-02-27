@@ -68,7 +68,7 @@ def fetch(num):
                 transaction_ids.append(''.join(transaction.split(id_prefix)[1]).split(' ')[1])
             except:
                 continue
-        path = "records.xlsx"
+        path = "data/records.xlsx"
         #creating dataframe.
         df['Amount'] = amounts
         df['Date'] = dates
@@ -83,20 +83,20 @@ def fetch(num):
         # TODO(developer) - Handle errors from gmail API.
         print(f'An error occurred: {error}')
 def daywise():
-    df = pd.read_excel('records.xlsx', sheet_name='BANK RECORDS')
+    df = pd.read_excel('data/records.xlsx', sheet_name='BANK RECORDS')
     df.drop('ids',axis=1,inplace=True)
     daywise = df.groupby('Date').sum()
-    daywise.to_excel('daywise.xlsx')
+    daywise.to_excel('data/daywise.xlsx')
 def stats():
-    df = pd.read_excel('records.xlsx', sheet_name='BANK RECORDS')
+    df = pd.read_excel('data/records.xlsx', sheet_name='BANK RECORDS')
     inf = df.describe()
-    inf.to_excel('info.xlsx')
+    inf.to_excel('data/info.xlsx')
     print(tabulate.tabulate(inf, headers='keys', tablefmt='psql'))
     print("\n")
 
 
 def tag():
-    df = pd.read_excel('records.xlsx', sheet_name='BANK RECORDS')
+    df = pd.read_excel('data/records.xlsx', sheet_name='BANK RECORDS')
     l= []
     print("Unique ids found were: ",', '.join(df['ids'].unique()))
     for i in df['ids'].unique():
@@ -111,21 +111,21 @@ def tag():
     tf = pd.DataFrame(columns=['ids','tags'])
     tf['ids'] = df['ids'].unique()
     tf['tags'] = tags
-    tf.to_excel('tags.xlsx')
+    tf.to_excel('data/tags.xlsx')
 def tag_amounts():
     try:
-        df = pd.read_excel('records.xlsx', sheet_name='BANK RECORDS')
-        tf = pd.read_excel('tags.xlsx')
+        df = pd.read_excel('data/records.xlsx', sheet_name='BANK RECORDS')
+        tf = pd.read_excel('data/tags.xlsx')
         amounts = []
         for i in tf['ids']:
             amounts.append(df['Amount'][df['ids']==i].sum())
         tf['Amounts'] = amounts
-        tf.to_excel('tag_amounts.xlsx',index=False)
+        tf.to_excel('data/tag_amounts.xlsx',index=False)
     except:
         print("Tags not found.")
         return
 def catergory():
-    if not os.path.exists('categories.xlsx'):
+    if not os.path.exists('data/categories.xlsx'):
         categories = ["Food","Groceries","Entertainment","Travel","Bills","Others"]
         print("Categories: ",categories)
         print("\nAdd a Category y/n: ")
@@ -138,13 +138,13 @@ def catergory():
         else:
             pass
     else:
-        cf = pd.read_excel('categories.xlsx')
+        cf = pd.read_excel('data/categories.xlsx')
         categories = cf['categories'].to_list()
     cf = pd.DataFrame(columns=['categories'])
     cf['categories'] = categories
-    cf.to_excel('categories.xlsx',index=False)
+    cf.to_excel('data/categories.xlsx',index=False)
     print("Add categories to tags: ")
-    df = pd.read_excel('tag_amounts.xlsx')
+    df = pd.read_excel('data/tag_amounts.xlsx')
     tags = df['tags'].to_list()
     categories = categories
     cat = []
@@ -154,7 +154,7 @@ def catergory():
         print("Enter category: ")
         cat.append(input())
     df['categories'] = cat
-    df.to_excel('tag_amounts.xlsx',index=False)
+    df.to_excel('data/tag_amounts.xlsx',index=False)
     print("Categories added.")
 def menu():
     print("UPI Transaction Analyzer\n")
