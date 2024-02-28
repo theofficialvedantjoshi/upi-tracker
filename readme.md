@@ -12,6 +12,7 @@ Features:
     -Add general catergories to you expenditure.
     -All data returned in xlsx format
     -Uses Gmail API.
+    -Currently supports HDFC and Axis Bank transactions.
 
 ### Quick Start
 
@@ -24,3 +25,9 @@ In the Google Cloud console, enable the Gmail API.Configure the OAuth consent sc
 Download the credentials.json file and place it in the directory of the project.
 
 When the app is run for the first time it will prompt you to sign through your google account.
+
+#### FEATURES TO ADD
+
+    -add more banks.
+    -get time period data.
+    -add transaction limits.
