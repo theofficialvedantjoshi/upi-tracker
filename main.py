@@ -56,7 +56,7 @@ def fetch(num):
             ids.append(i.get('id'))
         n = num
         #getting message ids and email bodies and adding that to our lists.
-        for i in tqdm(range(0, n), desc="Fetching Records"):
+        for i in tqdm(range(0, n), desc="\nFetching Records"):
             request = service.users().messages().get(userId='me',id=ids[i],)
             request.execute()
             transaction = str(request.execute().get('snippet'))
@@ -123,7 +123,7 @@ def tag_amounts():
         tf.to_excel('data/tag_amounts.xlsx',index=False)
     except:
         print("Tags not found.")
-        return
+        menu()
 def catergory():
     if not os.path.exists('data/categories.xlsx'):
         categories = ["Food","Groceries","Entertainment","Travel","Bills","Others"]
